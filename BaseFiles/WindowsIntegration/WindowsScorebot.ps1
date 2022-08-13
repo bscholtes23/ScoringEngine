@@ -109,11 +109,16 @@ $allTasks = @(
     [Task]::new("Beginner", "Disabled Secondary Logon", 3, "(Get-Service -Name 'seclogon').Status | Select-String -Pattern 'Stopped'")
     [Task]::new("Beginner", "Configured UAC", 3, "(Get-ItemProperty 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System' 'ConsentPromptBehaviorAdmin').ConsentPromptBehaviorAdmin | Select-String -Pattern '2'")
     [Task]::new("Beginner","Audits Configured",2, "((gc C:\secpol.cfg) -replace '\s','') | Select-String -Pattern 'AuditLogonEvents=3'")
-    [Task]::new("Beginner", "Minimum password age set",2,"(gc C:\secpol.cfg) -replace '\s' | Select-String -Pattern 'MinimumPasswordLength=12'")
+    [Task]::new("Beginner", "Minimum password age set",2,"(gc C:\secpol.cfg) -replace '\s' | Select-String -Pattern 'MinimumPasswordLength=14'")
     [Task]::new("Beginner","Installed Firefox",2 , "(ls C:\'Program Files (x86)').name | Select-String -Pattern 'Mozilla Firefox'")
     [Task]::new("Beginner", "Public Firewall: Block inbound connections that do not match", 2, "(Get-NetFirewallProfile -Name Public).DefaultInboundAction -eq 'Block'")
     [Task]::new("Beginner", "Public Firewall: Allow outband connections that do not match", 2, "(Get-NetFirewallProfile -Name Public).DefaultInboundAction -eq 'Allow'")
-
+    [Task]::new("Beginner", "Enfored Password History",2,"(gc C:\secpol.cfg -replace '\s' | Select-String -Pattern 'PasswordHistorySize=7'")
+    [Task]::new("Beginner", "Maximum Password Age Enforced",2, "(gc C:\secpol.cfg -replace '\s' | Select-string -Pattern 'MaximumPasswordAge=31'")
+    [Task]::new("Beginner", "Minimum Password Age Enforced",2, "(gc C:\secpol.cfg -replace '\s' | Select-string -Pattern 'MinimumPasswordAge=7'")
+    [Task]::new("Beginner", "Password Must Meet Complexity Requirements",2, "(gc C:\secpol.cfg -replace '\s' | Select-string -Pattern 'PasswordComplexity=1'")
+    [Task]::new("Beginner", "Account Lockout Threshold Enforced",3, "(gc C:\secpol.cfg -replace '\s' | Select-string -Pattern 'LockoutBadCount=5'")
+    [Task]::new("Beginner", "Auditing Failures For Directory Service Access",3, "(gc C:\secpol.cfg -replace '\s' | Select-string -Pattern 'AuditDSAccess=3'")
     
     [Task]::new("Intermediate", "Screensaver locks machine", 5, "(Get-ItemProperty 'HKCU:\Control Panel\Desktop' 'ScreenSaverIsSecure').ScreenSaverIsSecure -eq 1")
     [Task]::new("Intermediate", "wwwroot Permissions fixed", 5, "!((Get-ACl C:\inetpub\wwwroot) | Out-String | Select-String -Pattern 'Users Allow  FullControl')")
